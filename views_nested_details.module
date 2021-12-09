@@ -45,10 +45,10 @@ function views_nested_details_theme() {
       'render element' => 'children',
     ],
     // Views GROUP templates.
-    'views_view_carapace_section_grouping' => [
+    'views_view_nested_details_section_grouping' => [
       'variables' => ['view' => NULL, 'grouping' => NULL, 'grouping_level' => NULL, 'rows' => NULL, 'title' => NULL],
     ],
-    'views_view_carapace_details' => array(
+    'views_view_nested_details' => array(
       'variables' => array('view' => NULL, 'rows' => NULL),
     ),
   ];
