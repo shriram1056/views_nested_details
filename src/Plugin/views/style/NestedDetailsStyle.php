@@ -7,9 +7,7 @@
 
 namespace Drupal\views_nested_details\Plugin\views\style;
 
-use Drupal\views\Annotation\ViewsStyle;
 use Drupal\views\Plugin\views\style\StylePluginBase;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Details style plugin to render rows as details.
@@ -65,21 +63,6 @@ class NestedDetailsStyle extends StylePluginBase {
   public $order;
 
   protected $groupingTheme = 'views_view_nested_details_section_grouping';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function defineOptions() {
-
-    $options = parent::defineOptions();
-    $options['collapsed'] = array('default' => FALSE);
-    $options['open_first'] = array('default' => TRUE);
-    $options['title'] = array('default' => '');
-    $options['description'] = array('default' => '');
-    $options['override'] = ['default' => TRUE];
-
-    return $options;
-  }
 
   /**
    * Render the display in this style.
@@ -151,56 +134,4 @@ class NestedDetailsStyle extends StylePluginBase {
     unset($this->view->row_index);
     return $output;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
-
-    parent::buildOptionsForm($form, $form_state);
-
-    $form['collapsed'] = array(
-      '#title' => $this->t('Collapsed by default'),
-      '#type' => 'checkbox',
-      '#description' => $this->t('Check to show details collapsed.'),
-      '#default_value' => $this->options['collapsed'],
-      '#weight' => -49,
-    );
-
-    $form['open_first'] = array(
-      '#title' => $this->t('Leave first fieldset open'),
-      '#type' => 'checkbox',
-      '#description' => $this->t('Check to leave first fieldset open.'),
-      '#default_value' => $this->options['open_first'],
-      '#weight' => -48,
-      '#states' => array(
-        'invisible' => array(
-          ':input[name="style_options[collapsed]"]' => array('checked' => FALSE),
-        ),
-      ),
-    );
-
-    $options = array('' => $this->t('- None -'));
-    $field_labels = $this->displayHandler->getFieldLabels(TRUE);
-    $options += $field_labels;
-
-    $form['title'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Details Title'),
-      '#options' => $options,
-      '#default_value' => $this->options['title'],
-      '#description' => $this->t('Choose the title of details.'),
-      '#weight' => -47,
-    );
-
-    $form['description'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Details Description'),
-      '#options' => $options,
-      '#default_value' => $this->options['description'],
-      '#description' => $this->t('Optional details description.'),
-      '#weight' => -46,
-    );
-  }
-
 }
