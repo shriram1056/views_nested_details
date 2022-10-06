@@ -7,9 +7,7 @@
 
 namespace Drupal\views_nested_details\Plugin\views\style;
 
-use Drupal\views\Annotation\ViewsStyle;
 use Drupal\views\Plugin\views\style\StylePluginBase;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Details style plugin to render rows as details.
@@ -27,14 +25,9 @@ use Drupal\Core\Form\FormStateInterface;
 class NestedDetailsStyle extends StylePluginBase {
 
   /**
-   * Does the style plugin for itself support to add fields to its output.
+   * Does the style plugin support custom css class for the rows.
    *
    * @var bool
-   */
-  protected $usesFields = TRUE;
-
-  /**
-   * {@inheritdoc}
    */
   protected $usesRowPlugin = TRUE;
 
@@ -53,33 +46,11 @@ class NestedDetailsStyle extends StylePluginBase {
   protected $defaultFieldLabels = TRUE;
 
   /**
-   * Contains the current active sort column.
+   * The theme function used to render the grouping set.
+   *
    * @var string
    */
-  public $active;
-
-  /**
-   * Contains the current active sort order, either desc or asc.
-   * @var string
-   */
-  public $order;
-
   protected $groupingTheme = 'views_view_nested_details_section_grouping';
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function defineOptions() {
-
-    $options = parent::defineOptions();
-    $options['collapsed'] = array('default' => FALSE);
-    $options['open_first'] = array('default' => TRUE);
-    $options['title'] = array('default' => '');
-    $options['description'] = array('default' => '');
-    $options['override'] = ['default' => TRUE];
-
-    return $options;
-  }
 
   /**
    * Render the display in this style.
@@ -150,57 +121,28 @@ class NestedDetailsStyle extends StylePluginBase {
     }
     unset($this->view->row_index);
     return $output;
+
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildOptionsForm(&$form, FormStateInterface $form_state) {
+  public function validate() {
+    $errors = parent::validate();
+    if (!$this->usesFields()) {
+      $errors[] = $this->t('Views Nested Details requires Fields as row style');
+    }
 
-    parent::buildOptionsForm($form, $form_state);
+    foreach ($this->options['grouping'] as $group) {
+      if (!$group['rendered']) {
+        $errors[] = $this->t('Views Nested Details requires "Use rendered output to group rows" enabled in order to use the field values for grouping.');
+      }
+      // @TODO handle multiple grouping.
+      break;
+    }
 
-    $form['collapsed'] = array(
-      '#title' => $this->t('Collapsed by default'),
-      '#type' => 'checkbox',
-      '#description' => $this->t('Check to show details collapsed.'),
-      '#default_value' => $this->options['collapsed'],
-      '#weight' => -49,
-    );
+    return $errors;
 
-    $form['open_first'] = array(
-      '#title' => $this->t('Leave first fieldset open'),
-      '#type' => 'checkbox',
-      '#description' => $this->t('Check to leave first fieldset open.'),
-      '#default_value' => $this->options['open_first'],
-      '#weight' => -48,
-      '#states' => array(
-        'invisible' => array(
-          ':input[name="style_options[collapsed]"]' => array('checked' => FALSE),
-        ),
-      ),
-    );
-
-    $options = array('' => $this->t('- None -'));
-    $field_labels = $this->displayHandler->getFieldLabels(TRUE);
-    $options += $field_labels;
-
-    $form['title'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Details Title'),
-      '#options' => $options,
-      '#default_value' => $this->options['title'],
-      '#description' => $this->t('Choose the title of details.'),
-      '#weight' => -47,
-    );
-
-    $form['description'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('Details Description'),
-      '#options' => $options,
-      '#default_value' => $this->options['description'],
-      '#description' => $this->t('Optional details description.'),
-      '#weight' => -46,
-    );
   }
 
 }
