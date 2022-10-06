@@ -5,36 +5,8 @@
  * Contains views_nested_details.module.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Form\FormState;
-use Drupal\Core\Link;
-use Drupal\Core\Render\Element\RenderElement;
 use Drupal\Core\Template\Attribute;
-use Drupal\Core\Url;
-use Drupal\views\ViewExecutable;
-use Drupal\views\Views;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Drupal\node\NodeInterface;
 use Drupal\islandora\IslandoraUtils;
-
-/**
- * Implements hook_help().
- */
-function views_nested_details_help($route_name, RouteMatchInterface $route_match) {
-  switch ($route_name) {
-    // Main module help for the views_nested_details module.
-    case 'help.page.views_nested_details':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('views_nested_details View') . '</p>';
-      return $output;
-
-    default:
-  }
-}
 
 /**
  * Implements hook_theme().
