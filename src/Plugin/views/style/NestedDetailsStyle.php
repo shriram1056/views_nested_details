@@ -72,59 +72,6 @@ class NestedDetailsStyle extends StylePluginBase {
   }
 
   /**
-   * Render the grouping sets.
-   *
-   * Plugins may override this method if they wish some other way of handling
-   * grouping.
-   *
-   * @param $sets
-   *   An array keyed by group content containing the grouping sets to render.
-   *   Each set contains the following associative array:
-   *   - group: The group content.
-   *   - level: The hierarchical level of the grouping.
-   *   - rows: The result rows to be rendered in this group..
-   *
-   * @return array
-   *   Render array of grouping sets.
-   */
-  public function renderGroupingSets($sets) {
-    $output = [];
-    $theme_functions = $this->view->buildThemeFunctions($this->groupingTheme);
-    foreach ($sets as $set) {
-      $level = $set['level'] ?? 0;
-
-      $row = reset($set['rows']);
-      // Render as a grouping set.
-      if (is_array($row) && isset($row['group'])) {
-        $single_output = [
-          '#theme' => $theme_functions,
-          '#view' => $this->view,
-          '#grouping' => $this->options['grouping'][$level],
-          '#rows' => $set['rows'],
-        ];
-      }
-      // Render as a record set.
-      else {
-        if ($this->usesRowPlugin()) {
-          foreach ($set['rows'] as $index => $row) {
-            $this->view->row_index = $index;
-            $set['rows'][$index] = $this->view->rowPlugin->render($row);
-          }
-        }
-
-        $single_output = $this->renderRowGroup($set['rows']);
-      }
-
-      $single_output['#grouping_level'] = $level;
-      $single_output['#title'] = $set['group'];
-      $output[] = $single_output;
-    }
-    unset($this->view->row_index);
-    return $output;
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function validate() {
