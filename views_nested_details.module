@@ -9,6 +9,22 @@ use Drupal\Core\Template\Attribute;
 use Drupal\islandora\IslandoraUtils;
 
 /**
+ * Implements hook_help().
+ */
+function islandora_help($route_name, RouteMatchInterface $route_match) {
+    switch ($route_name) {
+        // Main module help for the islandora module.
+        case 'help.page.islandora':
+            $output = '';
+            $output .= '<h3>' . t('About') . '</h3>';
+            $output .= '<p>' . t('Islandora integrates Drupal with a Fedora repository.') . '</p>';
+            return $output;
+
+        default:
+    }
+}
+
+/**
  * Implements hook_theme().
  */
 function views_nested_details_theme() {
