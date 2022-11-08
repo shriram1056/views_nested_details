@@ -11,7 +11,7 @@ use Drupal\islandora\IslandoraUtils;
 /**
  * Implements hook_help().
  */
-function islandora_help($route_name, RouteMatchInterface $route_match) {
+function views_nested_details_help($route_name, RouteMatchInterface $route_match) {
     switch ($route_name) {
         // Main module help for the islandora module.
         case 'help.page.islandora':
