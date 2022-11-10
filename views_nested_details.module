@@ -13,11 +13,11 @@ use Drupal\islandora\IslandoraUtils;
  */
 function views_nested_details_help($route_name, RouteMatchInterface $route_match) {
     switch ($route_name) {
-        // Main module help for the islandora module.
-        case 'help.page.islandora':
+        // Main module help for the views_nested_details module.
+        case 'help.page.views_nested_details':
             $output = '';
             $output .= '<h3>' . t('About') . '</h3>';
-            $output .= '<p>' . t('Islandora integrates Drupal with a Fedora repository.') . '</p>';
+            $output .= '<p>' . t('views_nested_details View') . '</p>';
             return $output;
 
         default:
