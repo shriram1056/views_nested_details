@@ -1,0 +1,8 @@
+name: 'Views Nested Details Test'
+type: module
+description: 'Provides test config for views_nested_details module tests.'
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - drupal:node
+  - drupal:user
+  - drupal:views_nested_details
